@@ -1,0 +1,1 @@
+{"version":3,"sources":["components/_sample.scss"],"names":[],"mappings":"AAGA,MACI,iBAAA","file":"style.min.css","sourcesContent":["// ---------------------------------------------------------\n// @Card\n// ---------------------------------------------------------\n.card {\n    background-color: $primary;\n}"]}

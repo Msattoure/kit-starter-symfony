@@ -1,0 +1,53 @@
+image: php:8.0-fpm
+
+pipelines:
+   branches:
+      '{master,main,develop}':
+      - step:
+          name: install tools
+          caches:
+               - composer
+          script:
+             - echo '******* start tools installation *******'
+
+            #Install tools
+
+             - apt-get update && apt-get install -qy git curl libmcrypt-dev mariadb-client 
+             - apt-get install -qy libmcrypt-dev
+             #- apt-get install libzip-dev zip unzip
+             - yes | pecl install mcrypt-1.0.4
+             - apt-get install -y openssh-client
+             - docker-php-ext-install pdo_mysql
+            
+             #Install xdebug for codecoverage
+             - pecl install xdebug
+             - docker-php-ext-enable xdebug
+             - echo "xdebug.mode=coverage" > /usr/local/etc/php/php.ini
+            
+             #Install composer
+
+             - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+             - composer install
+
+             #Run Test Suite
+             - ./vendor/bin/phpunit --coverage-text --colors=always --verbose --log-junit ./test-reports/phpunit.junit.xml --coverage-clover ./test-reports/phpunit.coverage.xml
+
+      - step:
+          name: Test
+          artifacts:
+            - test-reports/phpunit**  
+          script:
+             - echo '******* test execution *******'
+      - step:
+          name: deploy
+          script:
+             - echo 'Action to all branches not listed below'
+definitions:
+  services:
+    mysql:
+      image: mysql:5.7
+      environment:
+        MYSQL_DATABASE: 'pipeline'
+        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+        MYSQL_USER: 'pipeline'
+        MYSQL_PASSWORD: 'password'

@@ -1,0 +1,26 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+/node_modules/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+.phpunit.result.cache
+/test-reports/
+###< phpunit/phpunit ###
+
+.php-cs-fixer.cache
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
+
+/storage/
+.DS_store
