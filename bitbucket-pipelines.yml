@@ -11,6 +11,7 @@ pipelines:
              - echo '******* start packages and dependencies installation *******'
              #Install and update packages
              - apt-get update
+             - apt-get install git curl zip
             
              #Install xdebug for codecoverage
              - pecl install xdebug
