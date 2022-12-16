@@ -37,7 +37,7 @@ pipelines:
              - #pipe: sonarsource/sonarcloud-scan:1.2.1
              - #pipe: sonarsource/sonarcloud-quality-gate:0.1.4
       - step:
-          name: deploy
+          name: Deploy to preprod or prod
           script:
              - echo '******* deploy on preprod or prod  *******'
              #Install and update packages
