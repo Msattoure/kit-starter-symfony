@@ -14,6 +14,7 @@ pipelines:
              - apt-get install -qy git curl zip
             
              #Install xdebug for codecoverage
+
              - pecl install xdebug
              - docker-php-ext-enable xdebug
              - echo "xdebug.mode=coverage" > /usr/local/etc/php/php.ini
@@ -29,10 +30,19 @@ pipelines:
              - ./vendor/bin/phpunit --coverage-text --colors=always --verbose --log-junit ./test-reports/phpunit.junit.xml --coverage-clover ./test-reports/phpunit.coverage.xml
 
       - step:
-          name: Quality check 
+          name: Static Code Analysis 
           script:
              - echo '******* Quality check with sonar cloud  *******'
+             #Define token and others viraibles in your repository variables
+             - #pipe: sonarsource/sonarcloud-scan:1.2.1
+             - #pipe: sonarsource/sonarcloud-quality-gate:0.1.4
       - step:
           name: deploy
           script:
-             - echo '******* deploy on preprod  *******'
+             - echo '******* deploy on preprod or prod  *******'
+             #Install and update packages
+             - apt-get update
+             - apt-get install -qy git curl zip
+             - apt-get install -y openssh-client
+             #go to ssh_script.sh to define your deployement scripts
+             - #ssh $USER__NAME@$SITE_DOMAIN 'bash -s' < ssh_script.sh
