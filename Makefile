@@ -14,16 +14,22 @@ help:
 	@echo " "
 
 build: stop
+	@echo "$(STEP) Starting build containers... $(STEP)";
 	@docker-compose build;
 	@$(MAKE) up;
 
-install: up
+install:
+	@echo "$(STEP) Starting build containers... $(STEP)";
+	@docker-compose build;
+	@$(MAKE) up;
+	@echo "$(STEP) Starting build application... $(STEP)";
 	@docker exec  -it $(DOCKER_PHP_CONTAINER_NAME) composer install;
 	@docker exec  -it $(DOCKER_PHP_CONTAINER_NAME) php bin/console make:migration;
 	@docker exec  -it $(DOCKER_PHP_CONTAINER_NAME) php bin/console doctrine:migrations:migrate;
 	@docker exec  -it $(DOCKER_PHP_CONTAINER_NAME) php bin/console cache:clear;
 	@docker exec  -it $(DOCKER_PHP_CONTAINER_NAME) npm install;
 	@docker exec  -it $(DOCKER_PHP_CONTAINER_NAME) gulp;
+	@docker exec  -it $(DOCKER_PHP_CONTAINER_NAME) npx husky install;
 
 cli:
 	@echo "$(STEP) Entering bash CLI in $(DOCKER_PHP_CONTAINER_NAME)... $(STEP)";
