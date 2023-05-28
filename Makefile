@@ -11,6 +11,7 @@ help:
 	@echo "-- cli-server: enter NGINX container CLI";
 	@echo "-- up: start the project";
 	@echo "-- stop: stop the project";
+	@echo "-- test: test the project";
 	@echo " "
 
 build: stop
@@ -48,3 +49,9 @@ stop:
 	@echo "$(STEP) Stopping containers... $(STEP)";
 	@docker-compose stop;
 	@echo "$(STEP) Finished! $(STEP)";
+
+test:
+	@$(MAKE) up;
+	@docker exec  -it $(DOCKER_PHP_CONTAINER_NAME) ./vendor/bin/phpunit --coverage-text --colors=always --verbose --log-junit ./test-reports/phpunit.junit.xml --coverage-clover ./test-reports/phpunit.coverage.xml;
+
+	
